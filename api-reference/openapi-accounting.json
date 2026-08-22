@@ -1,0 +1,186 @@
+{
+ "openapi": "3.0.3",
+ "info": {
+  "title": "API Contable de Abacco",
+  "version": "1.0.0",
+  "description": "Comprobantes contables y F29. Autenticación Bearer (token de sesión de la plataforma)."
+ },
+ "servers": [
+  {"url": "https://api.abacco.ai/api/accounting", "description": "Producción"}
+ ],
+ "security": [{"bearerAuth": []}],
+ "paths": {
+  "/journal-entries/": {
+   "get": {
+    "operationId": "listJournalEntries",
+    "summary": "Listar comprobantes del libro diario",
+    "tags": ["Contabilidad"],
+    "parameters": [
+     {"name": "entity_id", "in": "query", "required": true, "schema": {"type": "string"}, "description": "Id de la empresa"},
+     {"name": "origin", "in": "query", "schema": {"type": "string"}, "description": "Origen del asiento"},
+     {"name": "folio", "in": "query", "schema": {"type": "string"}, "description": "Folio del comprobante"}
+    ],
+    "responses": {
+     "200": {
+      "description": "OK",
+      "content": {"application/json": {"schema": {"type": "object", "properties": {"results": {"type": "array", "items": {"$ref": "#/components/schemas/JournalEntry"}}}}}}
+     }
+    }
+   },
+   "post": {
+    "operationId": "createJournalEntry",
+    "summary": "Crear un comprobante contable",
+    "tags": ["Contabilidad"],
+    "parameters": [
+     {"name": "entity_id", "in": "query", "required": true, "schema": {"type": "string"}, "description": "Id de la empresa"}
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {"$ref": "#/components/schemas/JournalEntryCreate"},
+       "example": {
+        "date": "2026-08-31",
+        "description": "Arriendo oficina agosto",
+        "lines": [
+         {"account_code": "6101", "debit": 500000, "credit": 0, "glosa": "Arriendo"},
+         {"account_code": "1101", "debit": 0, "credit": 500000, "glosa": "Pago banco"}
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {"description": "Comprobante creado", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/JournalEntry"}}}},
+     "400": {"description": "Fecha/descripción faltante, menos de 2 líneas, asiento descuadrado o período cerrado"}
+    }
+   }
+  },
+  "/f29-declarations/": {
+   "get": {
+    "operationId": "listF29Declarations",
+    "summary": "Listar declaraciones F29 del período",
+    "tags": ["Impuestos"],
+    "parameters": [
+     {"name": "period_year", "in": "query", "required": true, "schema": {"type": "integer"}, "example": 2026},
+     {"name": "period_month", "in": "query", "required": true, "schema": {"type": "integer"}, "example": 7},
+     {"name": "status", "in": "query", "schema": {"type": "string", "enum": ["draft", "sent", "paid"]}},
+     {"name": "search", "in": "query", "schema": {"type": "string"}, "description": "Razón social o RUT del cliente"}
+    ],
+    "responses": {
+     "200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object", "properties": {"results": {"type": "array", "items": {"$ref": "#/components/schemas/F29Declaration"}}}}}}}
+    }
+   }
+  },
+  "/f29-declarations/{id}/": {
+   "get": {
+    "operationId": "getF29Declaration",
+    "summary": "Detalle de una declaración (códigos del formulario)",
+    "tags": ["Impuestos"],
+    "parameters": [
+     {"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}
+    ],
+    "responses": {
+     "200": {"description": "OK", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/F29Declaration"}}}}
+    }
+   }
+  },
+  "/f29-declarations/draft-fields/": {
+   "post": {
+    "operationId": "bulkDraftFields",
+    "summary": "Aplicar campos a todos los borradores del período",
+    "tags": ["Impuestos"],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "period_year": {"type": "integer"},
+         "period_month": {"type": "integer"},
+         "fields": {"type": "object", "additionalProperties": {"type": "number"}, "description": "Mapa {sii_code: value} a aplicar en cada borrador"}
+        },
+        "required": ["period_year", "period_month", "fields"]
+       },
+       "example": {"period_year": 2026, "period_month": 7, "fields": {"61": 152000}}
+      }
+     }
+    },
+    "responses": {"200": {"description": "Borradores actualizados"}}
+   }
+  },
+  "/f29-declarations/sii-checks/": {
+   "post": {
+    "operationId": "createF29SiiCheck",
+    "summary": "Verificar el borrador contra el F29 propuesto en el SII",
+    "tags": ["Impuestos"],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {"declaration_id": {"type": "string"}},
+        "required": ["declaration_id"]
+       }
+      }
+     }
+    },
+    "responses": {"202": {"description": "Check encolado; el resultado llega por WebSocket y queda en la declaración"}}
+   }
+  }
+ },
+ "components": {
+  "securitySchemes": {
+   "bearerAuth": {"type": "http", "scheme": "bearer", "bearerFormat": "JWT"}
+  },
+  "schemas": {
+   "JournalEntryLine": {
+    "type": "object",
+    "properties": {
+     "account_code": {"type": "string", "example": "1101"},
+     "debit": {"type": "number", "example": 500000},
+     "credit": {"type": "number", "example": 0},
+     "glosa": {"type": "string"},
+     "auxiliar_rut": {"type": "string", "description": "RUT del auxiliar/contraparte (opcional)"},
+     "document_id": {"type": "integer", "description": "Documento tributario asociado (opcional)"}
+    },
+    "required": ["account_code"]
+   },
+   "JournalEntryCreate": {
+    "type": "object",
+    "properties": {
+     "date": {"type": "string", "format": "date"},
+     "description": {"type": "string"},
+     "lines": {"type": "array", "minItems": 2, "items": {"$ref": "#/components/schemas/JournalEntryLine"}, "description": "Mínimo 2 líneas; total Debe = total Haber"},
+     "norma": {"type": "string", "description": "Norma del comprobante (default tributaria)"},
+     "allow_locked": {"type": "boolean", "description": "true para pasar la barrera de período cerrado"},
+     "idempotency_key": {"type": "string", "description": "Reintentar con la misma key no duplica el asiento"}
+    },
+    "required": ["date", "description", "lines"]
+   },
+   "JournalEntry": {
+    "type": "object",
+    "properties": {
+     "id": {"type": "integer"},
+     "date": {"type": "string", "format": "date"},
+     "description": {"type": "string"},
+     "lines": {"type": "array", "items": {"$ref": "#/components/schemas/JournalEntryLine"}}
+    }
+   },
+   "F29Declaration": {
+    "type": "object",
+    "properties": {
+     "id": {"type": "string"},
+     "client_name": {"type": "string"},
+     "client_tax_id": {"type": "string"},
+     "period_year": {"type": "integer"},
+     "period_month": {"type": "integer"},
+     "status": {"type": "string", "enum": ["draft", "sent", "paid"]},
+     "fields": {"type": "object", "additionalProperties": true, "description": "Códigos del formulario {sii_code: value}"}
+    }
+   }
+  }
+ }
+}

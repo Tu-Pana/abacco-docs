@@ -8,6 +8,10 @@
     "dark": "#1A1A1A"
   },
   "favicon": "/images/favicon.svg",
+  "openapi": [
+    "api-reference/openapi.json",
+    "api-reference/openapi-accounting.json"
+  ],
   "contextual": {
     "options": ["copy", "view", "chatgpt", "claude", "mcp", "cursor"]
   },
@@ -27,23 +31,49 @@
         "groups": [
           {
             "group": "Introducción",
-            "pages": ["api/introduction", "api/authentication"]
+            "pages": ["api/introduction", "api/authentication", "api/master-entities"]
           },
           {
             "group": "Contabilidad",
-            "pages": ["api/accounting"]
+            "pages": [
+              "api/accounting/introduction",
+              "api/accounting/list",
+              "api/accounting/create"
+            ]
           },
           {
             "group": "Impuestos",
-            "pages": ["api/f29", "api/book-summaries"]
+            "pages": [
+              "api/f29/introduction",
+              "api/f29/list",
+              "api/f29/get",
+              "api/f29/draft-fields",
+              "api/f29/sii-checks",
+              "api/book-summaries/introduction",
+              "api/book-summaries/list"
+            ]
           },
           {
             "group": "Remuneraciones",
-            "pages": ["api/payroll"]
+            "pages": [
+              "api/payroll/introduction",
+              "api/payroll/employees",
+              "api/payroll/employee-get",
+              "api/payroll/runs",
+              "api/payroll/run-get",
+              "api/payroll/payslips",
+              "api/payroll/payslip-get",
+              "api/payroll/indicators"
+            ]
           },
           {
             "group": "Documentos",
-            "pages": ["api/documents"]
+            "pages": [
+              "api/documents/introduction",
+              "api/documents/list",
+              "api/documents/get",
+              "api/documents/batch"
+            ]
           }
         ]
       },

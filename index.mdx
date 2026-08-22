@@ -29,6 +29,29 @@ Esta documentación cubre las dos formas de integrarte:
 - **Asistentes con IA**: con el MCP, tu equipo pregunta "¿cómo van los F29 de
   julio?" y obtiene la respuesta con datos reales, con permisos por usuario.
 
+## Recursos de la API
+
+| Sección | Recursos | Try it |
+|---|---|---|
+| **Contabilidad** | [Comprobantes contables](/api/accounting/introduction): [listar](/api/accounting/list) y [crear](/api/accounting/create) asientos del libro diario | ✅ |
+| **Impuestos** | [F29](/api/f29/introduction): [listar](/api/f29/list), [detalle](/api/f29/get), [campos en masa](/api/f29/draft-fields), [check SII](/api/f29/sii-checks) · [Libros compra/venta](/api/book-summaries/list) | ✅ |
+| **Remuneraciones** | [Empleados](/api/payroll/employees), [procesos](/api/payroll/runs), [liquidaciones](/api/payroll/payslips), [indicadores](/api/payroll/indicators) | ✅ |
+| **Documentos** | [Listar](/api/documents/list), [detalle](/api/documents/get) y [emisión masiva](/api/documents/batch) de DTEs | ✅ |
+| **Entidades** | [Empresa por RUT](/api/master-entities) (resuelve el `opaque_id`) | ✅ |
+
+Cada endpoint tiene playground interactivo: pon tu API Key (o token Bearer en
+Contabilidad/Impuestos) y prueba la llamada desde la misma página.
+
+## Recursos del MCP
+
+| Grupo | Tools |
+|---|---|
+| Cartera (gestoras) | `list_portfolio_clients` · `get_portfolio_f29_status` · `get_client_trial_balance` |
+| Contabilidad | `get_journal_entries` · `get_ledger` · `get_balance_sheet` · `get_income_statement` · `get_chart_of_accounts` · `get_account_balance` · `create_journal_entry` |
+| Reportería | `generate_chart` · `generate_multi_series_chart` |
+
+Detalle en la [referencia de tools](/mcp/tools).
+
 ## Empezar
 
 <Steps>

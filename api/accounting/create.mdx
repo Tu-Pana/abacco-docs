@@ -1,0 +1,6 @@
+---
+title: 'Crear comprobante'
+openapi: 'POST /journal-entries/'
+---
+
+Crea un asiento manual posteado en el libro diario. Mínimo 2 líneas y el total Debe debe cuadrar con el total Haber; con `idempotency_key`, reintentar no duplica. Ver la [tabla de campos](/api/accounting/introduction).
