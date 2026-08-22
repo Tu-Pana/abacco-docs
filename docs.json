@@ -13,7 +13,14 @@
     "api-reference/openapi-accounting.json"
   ],
   "contextual": {
-    "options": ["copy", "view", "chatgpt", "claude", "mcp", "cursor"]
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "mcp",
+      "cursor"
+    ]
   },
   "navigation": {
     "tabs": [
@@ -22,48 +29,111 @@
         "groups": [
           {
             "group": "Primeros Pasos",
-            "pages": ["index", "quickstart"]
+            "pages": [
+              "index",
+              "quickstart"
+            ]
           }
         ]
       },
       {
-        "tab": "API",
+        "tab": "API Contabilidad",
         "groups": [
           {
             "group": "Introducción",
-            "pages": ["api/introduction", "api/authentication", "api/master-entities"]
+            "pages": [
+              "api/introduction",
+              "api/authentication"
+            ]
           },
           {
-            "group": "Contabilidad",
+            "group": "Comprobantes",
             "pages": [
               "api/accounting/introduction",
               "api/accounting/list",
               "api/accounting/create"
             ]
+          }
+        ]
+      },
+      {
+        "tab": "API Impuestos",
+        "groups": [
+          {
+            "group": "Introducción",
+            "pages": [
+              "api/introduction",
+              "api/authentication"
+            ]
           },
           {
-            "group": "Impuestos",
+            "group": "F29",
             "pages": [
               "api/f29/introduction",
               "api/f29/list",
               "api/f29/get",
               "api/f29/draft-fields",
-              "api/f29/sii-checks",
-              "api/book-summaries/introduction",
-              "api/book-summaries/list"
+              "api/f29/sii-checks"
             ]
           },
           {
-            "group": "Remuneraciones",
+            "group": "Libros de Compra/Venta",
+            "pages": [
+              "api/book-summaries/introduction",
+              "api/book-summaries/list"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Remuneraciones",
+        "groups": [
+          {
+            "group": "Introducción",
+            "pages": [
+              "api/introduction",
+              "api/authentication"
+            ]
+          },
+          {
+            "group": "Empleados",
             "pages": [
               "api/payroll/introduction",
               "api/payroll/employees",
-              "api/payroll/employee-get",
+              "api/payroll/employee-get"
+            ]
+          },
+          {
+            "group": "Procesos y Liquidaciones",
+            "pages": [
               "api/payroll/runs",
               "api/payroll/run-get",
               "api/payroll/payslips",
-              "api/payroll/payslip-get",
+              "api/payroll/payslip-get"
+            ]
+          },
+          {
+            "group": "Indicadores",
+            "pages": [
               "api/payroll/indicators"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Facturación",
+        "groups": [
+          {
+            "group": "Introducción",
+            "pages": [
+              "api/introduction",
+              "api/authentication"
+            ]
+          },
+          {
+            "group": "Entidades",
+            "pages": [
+              "api/master-entities"
             ]
           },
           {
@@ -82,7 +152,11 @@
         "groups": [
           {
             "group": "Abacco MCP",
-            "pages": ["mcp/overview", "mcp/quickstart", "mcp/tools"]
+            "pages": [
+              "mcp/overview",
+              "mcp/quickstart",
+              "mcp/tools"
+            ]
           }
         ]
       }
