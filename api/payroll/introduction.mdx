@@ -9,8 +9,8 @@ Todos los endpoints reciben `master_entity_id` como query param (id opaco
 ## Empleados
 
 ```
-GET /v1/payroll/employees/?master_entity_id={id}&page=&page_size=
-GET /v1/payroll/employees/{id}/
+GET /api/v1/payroll/employees/?master_entity_id={id}&page=&page_size=
+GET /api/v1/payroll/employees/{id}/
 ```
 
 Ficha de cada trabajador: contrato, AFP, salud, sueldo base.
@@ -18,8 +18,8 @@ Ficha de cada trabajador: contrato, AFP, salud, sueldo base.
 ## Procesos de nómina
 
 ```
-GET /v1/payroll/runs/?master_entity_id={id}&period=YYYYMM
-GET /v1/payroll/runs/{id}/
+GET /api/v1/payroll/runs/?master_entity_id={id}&period=YYYYMM
+GET /api/v1/payroll/runs/{id}/
 ```
 
 Cada proceso trae `period`, `status`, `closed_at`, `paid_at` y `totals`
@@ -28,8 +28,8 @@ Cada proceso trae `period`, `status`, `closed_at`, `paid_at` y `totals`
 ## Liquidaciones
 
 ```
-GET /v1/payroll/runs/{id}/payslips/
-GET /v1/payroll/payslips/{id}/
+GET /api/v1/payroll/runs/{id}/payslips/
+GET /api/v1/payroll/payslips/{id}/
 ```
 
 Liquidaciones del proceso, con el detalle de haberes y descuentos por
@@ -38,13 +38,13 @@ trabajador.
 ## Indicadores previsionales
 
 ```
-GET /v1/payroll/indicators/?period=YYYYMM
+GET /api/v1/payroll/indicators/?period=YYYYMM
 ```
 
 UF, UTM, topes imponibles y tasas AFP/salud vigentes del período — los mismos
 que usa Abacco para calcular las liquidaciones.
 
 ```bash
-curl "https://api.abacco.ai/v1/payroll/runs/?master_entity_id=eid_...&period=202607" \
+curl "https://api.abacco.ai/api/v1/payroll/runs/?master_entity_id=eid_...&period=202607" \
   -H "Authorization: Api-Key TU_API_KEY"
 ```

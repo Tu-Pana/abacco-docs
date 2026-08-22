@@ -10,7 +10,8 @@
   "favicon": "/images/favicon.svg",
   "openapi": [
     "api-reference/openapi.json",
-    "api-reference/openapi-accounting.json"
+    "api-reference/openapi-accounting.json",
+    "api-reference/openapi-payroll.json"
   ],
   "contextual": {
     "options": [
