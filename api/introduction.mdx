@@ -24,12 +24,20 @@ están paginados con `page` y `page_size`.
 
 ## Recursos disponibles
 
-| Recurso | Descripción |
-|---|---|
-| [`/documents/`](/api/documents) | Documentos tributarios electrónicos (emisión y consulta) |
-| [`/book-summaries/`](/api/book-summaries) | Libros de compra/venta del SII por período |
-| [`/payroll/…`](/api/payroll) | Empleados, liquidaciones e indicadores previsionales |
-| `/master-entities/` | Datos de una empresa por RUT |
+| Sección | Recurso | Descripción |
+|---|---|---|
+| **Contabilidad** | [`/accounting/journal-entries/`](/api/accounting) | Comprobantes contables (asientos del libro diario) |
+| **Impuestos** | [`/accounting/f29-declarations/`](/api/f29) | Declaraciones F29 de la cartera (estados, borradores, checks SII) |
+| **Impuestos** | [`/book-summaries/`](/api/book-summaries) | Libros de compra/venta del SII por período |
+| **Remuneraciones** | [`/payroll/…`](/api/payroll) | Empleados, procesos de nómina, liquidaciones e indicadores |
+| Documentos | [`/documents/`](/api/documents) | Documentos tributarios electrónicos (emisión y consulta) |
+| — | `/master-entities/` | Datos de una empresa por RUT |
+
+<Note>
+Los endpoints de **`/v1/`** (documentos, libros, remuneraciones) se autentican
+con `Api-Key`. Los de **`/api/accounting/`** (comprobantes, F29) usan el token
+Bearer de la sesión de la plataforma.
+</Note>
 
 ## Errores
 

@@ -30,12 +30,20 @@
             "pages": ["api/introduction", "api/authentication"]
           },
           {
-            "group": "Referencia",
-            "pages": [
-              "api/documents",
-              "api/book-summaries",
-              "api/payroll"
-            ]
+            "group": "Contabilidad",
+            "pages": ["api/accounting"]
+          },
+          {
+            "group": "Impuestos",
+            "pages": ["api/f29", "api/book-summaries"]
+          },
+          {
+            "group": "Remuneraciones",
+            "pages": ["api/payroll"]
+          },
+          {
+            "group": "Documentos",
+            "pages": ["api/documents"]
           }
         ]
       },

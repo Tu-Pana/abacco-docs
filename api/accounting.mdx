@@ -1,0 +1,78 @@
+---
+title: 'Comprobantes contables'
+description: 'Crear asientos en el libro diario por API o por MCP'
+---
+
+Los comprobantes contables (asientos manuales) se registran en el libro diario
+de la empresa y alimentan el mayor, el balance y el EERR. Hay dos formas de
+crearlos: la **API** y el **MCP** (conversando con Claude).
+
+## Crear un comprobante por API
+
+```
+POST https://api.abacco.ai/api/accounting/journal-entries/?entity_id={id}
+```
+
+Autenticación: `Authorization: Bearer {token}` (token de sesión de la
+plataforma). El usuario necesita el permiso **crear asientos** en la empresa.
+
+### Campos del comprobante
+
+| Campo | Tipo | Requerido | Descripción |
+|---|---|---|---|
+| `date` | `YYYY-MM-DD` | ✅ | Fecha contable del asiento |
+| `description` | string | ✅ | Glosa general del comprobante |
+| `lines` | array | ✅ | Mínimo **2 líneas**; el total Debe debe cuadrar con el total Haber |
+| `norma` | string | — | Norma del comprobante (default tributaria) |
+| `allow_locked` | boolean | — | `true` para pasar la barrera de período cerrado (lock dates) |
+| `idempotency_key` | string | — | Key determinística: reintentar con la misma key **no duplica** el asiento |
+
+### Campos de cada línea
+
+| Campo | Tipo | Requerido | Descripción |
+|---|---|---|---|
+| `account_code` | string | ✅ | Código de la cuenta del plan (ej. `1101` Banco) |
+| `debit` | number | ✅* | Monto al Debe (CLP) |
+| `credit` | number | ✅* | Monto al Haber (CLP) |
+| `glosa` | string | — | Glosa de la línea (fallback: `description`) |
+| `auxiliar_rut` | string | — | RUT del auxiliar/contraparte de la línea |
+| `document_id` | number | — | Documento tributario asociado a la línea |
+
+\* Cada línea lleva `debit` **o** `credit` (el otro en 0).
+
+### Ejemplo
+
+```bash
+curl -X POST "https://api.abacco.ai/api/accounting/journal-entries/?entity_id=123" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "date": "2026-08-31",
+    "description": "Arriendo oficina agosto",
+    "lines": [
+      {"account_code": "6101", "debit": 500000, "credit": 0, "glosa": "Arriendo"},
+      {"account_code": "1101", "debit": 0, "credit": 500000, "glosa": "Pago banco"}
+    ]
+  }'
+```
+
+Errores habituales: `400` si falta fecha/descripción, hay menos de 2 líneas,
+el asiento no cuadra (`Debe ≠ Haber`) o el período está cerrado sin
+`allow_locked`.
+
+## Crear un comprobante por MCP
+
+La tool [`create_journal_entry`](/mcp/tools#create_journal_entry) del
+[Abacco MCP](/mcp/overview) crea el mismo asiento conversando:
+
+> *"Crea el asiento del arriendo de agosto: $500.000 gasto arriendo contra banco"*
+
+| Parámetro | Descripción |
+|---|---|
+| `date` | Fecha contable |
+| `description` | Glosa del comprobante |
+| `lines` | Líneas con cuenta, debe/haber y glosa |
+| `confirm` | **`false` (default): solo previsualiza** el asiento cuadrado; `true`: lo postea |
+
+El MCP siempre muestra la previsualización antes de escribir — el asiento solo
+se crea cuando confirmas.

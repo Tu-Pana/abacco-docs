@@ -1,0 +1,62 @@
+---
+title: 'F29'
+description: 'Declaraciones F29 de la cartera: estados, preparación y verificación contra el SII'
+---
+
+El F29 en Abacco se gestiona **por cartera**: cada declaración pertenece a un
+cliente de la gestora y avanza por estados.
+
+| Estado | Significado |
+|---|---|
+| `draft` | Por preparar (borrador con la propuesta de Abacco) |
+| `sent` | Enviado al SII |
+| `paid` | Pagado |
+
+Autenticación: `Authorization: Bearer {token}` (sesión de la plataforma).
+Base: `https://api.abacco.ai/api/accounting`.
+
+## Listar declaraciones del período
+
+```
+GET /f29-declarations/?period_year=2026&period_month=7
+```
+
+| Parámetro | Descripción |
+|---|---|
+| `period_year` / `period_month` | Período tributario |
+| `status` | Filtra por `draft`, `sent`, `paid` |
+| `search` | Razón social o RUT del cliente |
+
+## Detalle y ciclo de vida
+
+```
+GET  /f29-declarations/{id}/               # detalle con códigos del formulario
+GET  /f29-declarations/{id}/status-log/    # historial de cambios de estado
+GET  /f29-declarations/{id}/certificate/   # certificado de la declaración
+POST /f29-declarations/{id}/emails/        # enviar por correo al cliente
+```
+
+## Aceptar campos en masa (borradores)
+
+```
+POST /f29-declarations/draft-fields/
+```
+
+Aplica `{sii_code: value}` a todos los borradores del período — por ejemplo,
+aceptar el impuesto único (código 61) de toda la cartera en un paso.
+
+## Verificación contra el SII antes de enviar
+
+```
+POST /f29-declarations/sii-checks/
+```
+
+Scrapea **en vivo** el F29 propuesto en el SII para el cliente, lo compara con
+el borrador de Abacco y reporta diferencias por código. También puedes guardar
+el borrador directamente en el SII (`sii-drafts`).
+
+## En el MCP
+
+La tool [`get_portfolio_f29_status`](/mcp/tools#get_portfolio_f29_status)
+responde *"¿cómo van los F29 de julio?"* con el estado de toda la cartera y un
+resumen por estado.
