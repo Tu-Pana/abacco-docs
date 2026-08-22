@@ -1,0 +1,68 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Abacco",
+  "colors": {
+    "primary": "#B08D57",
+    "light": "#D4AF37",
+    "dark": "#1A1A1A"
+  },
+  "favicon": "/images/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentación",
+        "groups": [
+          {
+            "group": "Primeros Pasos",
+            "pages": ["index", "quickstart"]
+          }
+        ]
+      },
+      {
+        "tab": "API",
+        "groups": [
+          {
+            "group": "Introducción",
+            "pages": ["api/introduction", "api/authentication"]
+          },
+          {
+            "group": "Referencia",
+            "pages": [
+              "api/documents",
+              "api/book-summaries",
+              "api/payroll"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "MCP",
+        "groups": [
+          {
+            "group": "Abacco MCP",
+            "pages": ["mcp/overview", "mcp/quickstart", "mcp/tools"]
+          }
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Plataforma",
+        "href": "https://abacco.ai/platform"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Abacco",
+      "href": "https://abacco.ai"
+    }
+  },
+  "footer": {
+    "socials": {
+      "website": "https://abacco.ai"
+    }
+  }
+}

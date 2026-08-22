@@ -1,0 +1,39 @@
+---
+title: 'Autenticación'
+description: 'API Keys de Abacco: obtención, uso y buenas prácticas'
+---
+
+## Obtener tu API Key
+
+1. Ingresa a [abacco.ai/platform](https://abacco.ai/platform)
+2. Ve a **Configuración → API**
+3. Haz clic en **Generar Nueva API Key**
+4. Guárdala en un lugar seguro — no podrás verla nuevamente
+
+## Usar tu API Key
+
+Incluye la key en el header `Authorization` con el prefijo `Api-Key`:
+
+```bash
+curl "https://api.abacco.ai/v1/documents/" \
+  -H "Authorization: Api-Key TU_API_KEY"
+```
+
+```python Python
+import requests
+
+headers = {"Authorization": "Api-Key TU_API_KEY"}
+response = requests.get("https://api.abacco.ai/v1/documents/", headers=headers)
+```
+
+## Alcance
+
+Cada API Key ve **solo las empresas asociadas a tu cuenta**: la cartera de tu
+gestora y tus propias empresas. No es posible consultar un RUT arbitrario.
+
+## Buenas prácticas
+
+1. **Nunca compartas tu API Key** ni la subas a un repositorio.
+2. Usa keys distintas para producción y desarrollo.
+3. Rota tus keys periódicamente.
+4. Ante un `401`, verifica el prefijo `Api-Key ` (con espacio) en el header.

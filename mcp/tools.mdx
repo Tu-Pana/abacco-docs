@@ -1,0 +1,66 @@
+---
+title: 'Referencia de tools'
+description: 'Las herramientas que expone el Abacco MCP y sus parámetros'
+---
+
+Todas las tools aceptan `entity_rut` opcional para elegir la empresa cuando tu
+cuenta tiene acceso a más de una. Los montos son CLP.
+
+## Cartera (gestoras)
+
+### `list_portfolio_clients`
+
+Clientes administrados por la gestora, con estado de credenciales SII
+(`valid` / `invalid` / `missing`) y quién paga el F29 de cada uno.
+
+### `get_portfolio_f29_status`
+
+`period_year`, `period_month` — estado del F29 de **toda la cartera** en el
+período: `draft` (por preparar), `sent` (enviado), `paid` (pagado) o `missing`,
+con resumen por estado.
+
+### `get_client_trial_balance`
+
+`client_rut`, `date_from`, `date_to` — balance de comprobación de un cliente
+**de la cartera** (débitos, créditos, saldos deudor/acreedor por cuenta, con
+totales). Un RUT fuera del roster se rechaza.
+
+## Contabilidad
+
+### `get_journal_entries`
+
+Libro diario: asientos posteados en un rango, con líneas debe/haber y glosa.
+
+### `get_ledger`
+
+Libro mayor de una cuenta (`account_code`, ej. `1101` Banco): movimientos con
+saldo acumulado y saldo de apertura.
+
+### `get_balance_sheet`
+
+Balance por sección (activo, pasivo, patrimonio, resultado) con cuadratura.
+
+### `get_income_statement`
+
+Estado de resultados del período: ingresos, costos, gastos, margen y
+resultado.
+
+### `get_chart_of_accounts`
+
+Plan de cuentas; `account_type` opcional (`asset`, `liability`, `equity`,
+`revenue`, `cost`, `expense`).
+
+### `get_account_balance`
+
+Saldo a hoy de una cuenta específica.
+
+### `create_journal_entry`
+
+Crea un asiento manual posteado. Con `confirm=false` devuelve una
+previsualización cuadrada; **solo escribe con `confirm=true`**.
+
+## Reportería visual
+
+### `generate_chart` / `generate_multi_series_chart`
+
+Gráficos (barras, líneas, torta) a partir de los datos de cualquier otra tool.

@@ -1,0 +1,49 @@
+---
+title: 'Documentos'
+description: 'Documentos tributarios electrónicos: listar, detalle y emisión masiva'
+---
+
+## Listar documentos
+
+```
+GET /v1/documents?master_entity_id={id}
+```
+
+Lista paginada de documentos emitidos o recibidos de una entidad. El
+`master_entity_id` acepta el id opaco (`eid_...`, campo `opaque_id` de
+`/master-entities?rut=`) o el id entero.
+
+Filtros habituales:
+
+| Parámetro | Descripción |
+|---|---|
+| `document_type` | `issued` o `received` |
+| `dte_type_code` | Código SII (33, 34, 39, 61, 80…) |
+| `date_from` / `date_to` | Rango de fecha de emisión (`YYYY-MM-DD`) |
+| `search` | Folio o razón social del receptor |
+| `page` / `page_size` | Paginación |
+| `include_trace_events` | `true` para la trazabilidad SII completa (acuses, reclamos) |
+| `include_book_metadata` | `true` para los datos del RCV de cada documento |
+
+```bash
+curl "https://api.abacco.ai/v1/documents?master_entity_id=eid_...&document_type=received&date_from=2026-07-01" \
+  -H "Authorization: Api-Key TU_API_KEY"
+```
+
+## Detalle de un documento
+
+```
+GET /v1/documents/{document_id}
+```
+
+Incluye detalle línea a línea, totales y los eventos de la traza SII.
+
+## Emisión masiva
+
+```
+POST /v1/master-entities/{id}/documents/batch-issue/
+```
+
+Emite un lote de documentos al SII con el mismo motor batch de la plataforma.
+Requiere el permiso de emisión en la API Key. El cuerpo replica el formato del
+documento individual (receptor, detalles, referencias) en un array `documents`.

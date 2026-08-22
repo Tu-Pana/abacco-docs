@@ -1,0 +1,36 @@
+---
+title: 'Abacco MCP'
+description: 'Conecta Claude (u otro cliente MCP) a la contabilidad de tu gestora'
+---
+
+El **Abacco MCP** es un servidor [Model Context Protocol](https://modelcontextprotocol.io)
+que expone tu contabilidad a asistentes con IA. En vez de exportar planillas,
+le preguntas a Claude:
+
+- *"¿Cómo van los F29 de julio de mi cartera?"*
+- *"Muéstrame el balance de comprobación de Comercial XYZ a junio"*
+- *"¿Qué clientes tienen credenciales SII inválidas?"*
+- *"Crea el asiento de la factura de arriendo"* (con confirmación)
+
+## Cómo funciona
+
+```
+https://mcp.abacco.ai/mcp
+```
+
+- **Transporte**: Streamable HTTP (el estándar MCP actual).
+- **Autenticación**: OAuth 2.1 — al conectar, el navegador se abre para
+  autorizar con tu cuenta de Abacco. Sin API keys que copiar.
+- **Permisos**: cada usuario ve solo las empresas a las que tiene acceso, y
+  los clientes de cartera solo dentro del roster de su gestora. Las acciones
+  que escriben (crear asientos) siempre piden confirmación explícita.
+
+## Qué expone
+
+| Grupo | Tools |
+|---|---|
+| Cartera (gestoras) | `list_portfolio_clients`, `get_portfolio_f29_status`, `get_client_trial_balance` |
+| Contabilidad | `get_journal_entries`, `get_ledger`, `get_balance_sheet`, `get_income_statement`, `get_chart_of_accounts`, `get_account_balance`, `create_journal_entry` |
+| Reportería visual | `generate_chart`, `generate_multi_series_chart` |
+
+Detalle de cada tool en la [referencia](/mcp/tools).

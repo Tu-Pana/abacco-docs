@@ -1,0 +1,52 @@
+---
+title: 'Conectar el MCP'
+description: 'Agrega Abacco a Claude Desktop, claude.ai o cualquier cliente MCP'
+---
+
+## Claude Desktop / claude.ai
+
+1. Ve a **Configuración → Conectores** (claude.ai) o **Settings → Connectors**
+   (Claude Desktop).
+2. Agrega un conector remoto con la URL:
+
+```
+https://mcp.abacco.ai/mcp
+```
+
+3. Se abrirá el navegador para autorizar con tu cuenta de Abacco (OAuth 2.1).
+4. Listo — pregúntale a Claude por tu cartera, balances o F29.
+
+## Claude Code
+
+```bash
+claude mcp add --transport http abacco https://mcp.abacco.ai/mcp
+```
+
+## Otros clientes MCP
+
+Cualquier cliente que soporte **Streamable HTTP + OAuth 2.1** funciona. El
+servidor soporta client registration dinámico (RFC 7591), así que no necesitas
+registrar tu cliente manualmente.
+
+```json
+{
+  "mcpServers": {
+    "abacco": {
+      "type": "http",
+      "url": "https://mcp.abacco.ai/mcp"
+    }
+  }
+}
+```
+
+## Primeras preguntas
+
+- *"Lista mi cartera de clientes con el estado de sus credenciales"*
+- *"¿Qué F29 de la cartera siguen por preparar este mes?"*
+- *"Balance de comprobación de [cliente] del primer semestre"*
+- *"Grafica los ingresos por mes de este año"*
+
+<Note>
+Cada usuario ve **solo sus empresas y su cartera**. Si una consulta devuelve
+"sin empresas asociadas", verifica con qué cuenta autorizaste el conector.
+</Note>

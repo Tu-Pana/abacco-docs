@@ -1,0 +1,68 @@
+---
+title: 'Quickstart'
+description: 'Tu primera llamada a la API de Abacco en 5 minutos'
+---
+
+## 1. Obtén tu API Key
+
+1. Ingresa a [abacco.ai/platform](https://abacco.ai/platform)
+2. Ve a **Configuración → API**
+3. Genera una nueva API Key y guárdala en un lugar seguro (no podrás verla de nuevo)
+
+## 2. Resuelve el id de tu empresa
+
+```bash
+curl "https://api.abacco.ai/v1/master-entities?rut=76.123.456-7" \
+  -H "Authorization: Api-Key TU_API_KEY"
+```
+
+Guarda el `opaque_id` (`eid_...`) de la respuesta: identifica a la empresa en
+el resto de los endpoints.
+
+## 3. Lista sus documentos
+
+```bash
+curl "https://api.abacco.ai/v1/documents?master_entity_id=eid_..." \
+  -H "Authorization: Api-Key TU_API_KEY"
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    "https://api.abacco.ai/v1/documents",
+    params={"master_entity_id": "eid_..."},
+    headers={"Authorization": "Api-Key TU_API_KEY"},
+)
+print(response.json())
+```
+
+## 4. Consulta un libro de compras
+
+```bash
+curl "https://api.abacco.ai/v1/book-summaries?master_entity_id=eid_...&period=202607&operation=COMPRA" \
+  -H "Authorization: Api-Key TU_API_KEY"
+```
+
+## 5. Conecta el MCP (opcional)
+
+Si usas Claude u otro cliente MCP, conecta tu contabilidad conversacionalmente
+con la URL:
+
+```
+https://mcp.abacco.ai/mcp
+```
+
+La autenticación es OAuth 2.1 — el navegador se abre para autorizar el acceso.
+Detalle en [Abacco MCP](/mcp/quickstart).
+
+## Siguientes pasos
+
+<CardGroup cols={2}>
+  <Card title="Autenticación" icon="key" href="/api/authentication">
+    API Keys, headers y buenas prácticas.
+  </Card>
+  <Card title="Referencia de API" icon="book" href="/api/documents">
+    Documentos, libros y remuneraciones.
+  </Card>
+</CardGroup>

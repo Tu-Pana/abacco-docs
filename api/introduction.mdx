@@ -1,0 +1,44 @@
+---
+title: 'Introducción'
+description: 'API REST de Abacco — base URL, formato y convenciones'
+---
+
+## Base URL
+
+```
+https://api.abacco.ai/v1
+```
+
+Todas las respuestas son JSON (`Content-Type: application/json`). Los listados
+están paginados con `page` y `page_size`.
+
+## Convenciones
+
+| Convención | Detalle |
+|---|---|
+| Identificador de empresa | `tax_id` (RUT con formato `12.345.678-9`) |
+| Tipos de documento | `dte_type_code` con el código SII (33, 34, 39, 61, 80…) |
+| Montos | Pesos chilenos (CLP) salvo indicación explícita |
+| Fechas | ISO 8601 (`YYYY-MM-DD`) |
+| Períodos | `YYYY-MM` |
+
+## Recursos disponibles
+
+| Recurso | Descripción |
+|---|---|
+| [`/documents/`](/api/documents) | Documentos tributarios electrónicos (emisión y consulta) |
+| [`/book-summaries/`](/api/book-summaries) | Libros de compra/venta del SII por período |
+| [`/payroll/…`](/api/payroll) | Empleados, liquidaciones e indicadores previsionales |
+| `/master-entities/` | Datos de una empresa por RUT |
+
+## Errores
+
+La API usa códigos HTTP estándar:
+
+| Código | Significado |
+|---|---|
+| `400` | Parámetros inválidos (el cuerpo indica el campo) |
+| `401` | API Key ausente o inválida |
+| `403` | La API Key no tiene acceso a esa empresa |
+| `404` | Recurso no encontrado |
+| `429` | Límite de tasa excedido — reintenta con backoff |

@@ -1,0 +1,40 @@
+---
+title: 'Libros de compra/venta'
+description: 'Resumen del libro de compras y ventas del SII por período'
+---
+
+## Resumen de libro
+
+```
+GET /v1/book-summaries?master_entity_id={id}&period={YYYYMM}
+```
+
+Devuelve los totales del libro (getResumen del SII) agrupados por tipo de
+documento y operación:
+
+| Parámetro | Descripción |
+|---|---|
+| `master_entity_id` | Id opaco (`eid_...`) o id entero de la entidad |
+| `period` | Período `YYYYMM` (ej. `202607`) |
+| `operation` | `COMPRA` o `VENTA` — si se omite, devuelve ambas |
+
+Cada ítem trae `total_docs`, `net_amount`, `exempt_amount`, `vat_amount` y
+`total_amount` por `dte_type_code` y `operation`.
+
+```bash
+curl "https://api.abacco.ai/v1/book-summaries?master_entity_id=eid_...&period=202607&operation=COMPRA" \
+  -H "Authorization: Api-Key TU_API_KEY"
+```
+
+<Note>
+El resumen es **opt-in** por entidad: el campo `is_enabled` de la respuesta
+indica si la entidad tiene habilitado el scrape. Si es `false`, solicita la
+habilitación a soporte.
+</Note>
+
+## Usos típicos
+
+- Conciliar el IVA débito/crédito del SII contra tu contabilidad.
+- Dashboards con totales mensuales de compras y ventas sin bajar el detalle
+  documento a documento (para el detalle usa
+  [`/documents` con `include_book_metadata`](/api/documents)).
