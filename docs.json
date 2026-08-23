@@ -34,19 +34,20 @@
               "index",
               "quickstart"
             ]
+          },
+          {
+            "group": "API",
+            "pages": [
+              "api/introduction",
+              "api/authentication",
+              "api/master-entities"
+            ]
           }
         ]
       },
       {
         "tab": "API Contabilidad",
         "groups": [
-          {
-            "group": "Introducción",
-            "pages": [
-              "api/introduction",
-              "api/authentication"
-            ]
-          },
           {
             "group": "Comprobantes",
             "pages": [
@@ -60,13 +61,6 @@
       {
         "tab": "API Impuestos",
         "groups": [
-          {
-            "group": "Introducción",
-            "pages": [
-              "api/introduction",
-              "api/authentication"
-            ]
-          },
           {
             "group": "F29",
             "pages": [
@@ -89,13 +83,6 @@
       {
         "tab": "API Remuneraciones",
         "groups": [
-          {
-            "group": "Introducción",
-            "pages": [
-              "api/introduction",
-              "api/authentication"
-            ]
-          },
           {
             "group": "Empleados",
             "pages": [
@@ -124,19 +111,6 @@
       {
         "tab": "API Facturación",
         "groups": [
-          {
-            "group": "Introducción",
-            "pages": [
-              "api/introduction",
-              "api/authentication"
-            ]
-          },
-          {
-            "group": "Entidades",
-            "pages": [
-              "api/master-entities"
-            ]
-          },
           {
             "group": "Documentos",
             "pages": [
